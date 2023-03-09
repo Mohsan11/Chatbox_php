@@ -9,10 +9,12 @@ if (isset($_POST['sub'])) {
     if (mysqli_num_rows($data) == 1) {
 
         $row = mysqli_fetch_assoc($data);
+        $_SESSION['logedIn'] = 1;
         $_SESSION['id'] = $row['User_Id'];
         $Id = $row['User_Id'];
         header('location:home.php?currentId=' . $Id);
     } else {
+        unset($_SESSION['logedIn']);
         unset($_SESSION['id']);
         header('location: LoginForm.php');
     }

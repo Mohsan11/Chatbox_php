@@ -2,17 +2,39 @@
 
 <head>
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: deepskyblue;
+            font-weight: 500;
+        }
+
+        a:hover {
+            border-bottom: 1px solid deepskyblue;
+        }
+
         h1,
         p {
             margin: 5px;
             padding: 5px;
+            font-weight: 200;
+        }
+
+        h1 {
+            font-weight: 300;
         }
 
         .container {
+            margin-top: 0;
             border: 1px solid black;
+            border-top: none;
             width: 70%;
             display: flex;
             flex-direction: column;
+            margin-bottom: 120px;
         }
 
         .box {
@@ -53,10 +75,14 @@
             margin: 0;
             background-color: #f3f3f1;
             padding: 20px;
+
         }
 
         .status-Container {
+            background-color: #444;
             border: 1px solid black;
+            border-top: 0;
+            margin-top: 0;
             padding: 0;
             width: 30%;
             display: flex;
@@ -66,14 +92,36 @@
 
         }
 
+        .status-h1 {
+            color: deepskyblue;
+        }
+
+        .status-p {
+            color: #4CAF50;
+            font-weight: 300;
+        }
+
+        .status-p:hover {
+            color: #47d74d;
+            font-weight: 300;
+            border-bottom: 1px solid green;
+            width: 30px;
+            cursor: pointer;
+        }
+
         .chat {
             border: 1px solid black;
+            border-top: none;
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap" rel="stylesheet">
     <title>ChatBox</title>
 </head>
 
 <body>
+    <?php include('./Nav.php') ?>
     <div class="main">
 
         <div class="container">
@@ -81,7 +129,7 @@
             session_start();
             if (isset($_SESSION['id'])) {
                 include('./db.php');
-                $CurrentUser = $_GET['currentId'];
+                $CurrentUser = $_SESSION['id'];
                 $sql = "SELECT users.User_Id, users.Name, messages.Message FROM users JOIN messages ON users.User_Id = messages.User_Id ORDER BY messages.Date ASC";
                 $data = mysqli_query($conn, $sql);
                 while ($row = mysqli_fetch_assoc($data)) {
@@ -89,50 +137,13 @@
                         <h1><a href="userDetail.php?id=<?php echo $row['User_Id'] ?>&currentUser=<?php echo $CurrentUser ?>">
                                 <?php echo $row['Name'] ?></h1>
                         </a>
-                        <p><?php echo $row['Message'] ?></p>
+                        <p style="margin-left: 100px;"><?php echo $row['Message'] ?></p>
                     </div>
                 <?php } ?>
         </div>
 
-        <div class="box">
-            <div class="messagebox">
-                <p class="typing"></p>
-                <form method="POST" action="sendMessage.php">
-                    <input type="hidden" name="currentUser" value="<?php echo $CurrentUser ?>">
-                    <input type="text" name="message" placeholder="Enter your message...">
-                    <input type="submit" name="sub">
-                </form>
-            </div>
-        </div>
-
-        <div class="status-Container">
-            <?php
-                $sql = "UPDATE `users` SET `Status`='Active' where `User_Id`='{$_SESSION['id']}'";
-                if (isset($_SESSION['id'])) {
-                    mysqli_query($conn, $sql);
-                    $sql = "SELECT * from `users`";
-                    $data = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_assoc($data)) {
-            ?>
-                    <h1><?php echo $row['Name'] ?></h1>
-                    <p><?php echo $_SESSION['id'] ?></p>
-                    <p><?php echo $row['Status'] ?></p>
-                <?php
-                    }
-                } else {
-                    $sql = "UPDATE `users` SET `Status`='Offline' where `User_Id`='{$_SESSION['id']}'";
-                    mysqli_query($conn, $sql);
-                    $sql = "SELECT * from `users`";
-                    $data = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_assoc($data)) {
-                    } ?>
-                <h1><?php echo $row['Name'] ?></h1>
-                <p><?php echo $_SESSION['id'] ?></p>
-                <p><?php echo $row['Status'] ?></p>
-            <?php
-                }
-            ?>
-        </div>
+        <?php include('msgbox.php') ?>
+        <?php include('./StatusBox.php'); ?>
     </div>
 
     <script>
