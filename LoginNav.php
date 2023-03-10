@@ -46,16 +46,8 @@
 <body>
     <nav>
         <ul>
-            <li><a class="a" href="./home.php">Home</a></li>
-            <?php
-            if (isset($_SESSION['logedIn'])) {
-            ?>
-                <li class="sticky"><a class="a" href="./LoginForm.php"> Login</a></li>
-            <?php                  } else {
-            ?>
-                <li class="sticky"><a class="a" href="./Session.php">Logout</a></li>
-            <?php }
-            ?>
+            <li><a class="a" href="./LoginForm.php">Login</a></li>
+            <li class="sticky"><a class="a" href="./RegisterForm.php">Register</a></li>
         </ul>
 
     </nav>

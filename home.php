@@ -162,6 +162,7 @@
 <?php
             } else {
                 header('location: LoginForm.php');
+                exit();
             }
 ?>
 </body>

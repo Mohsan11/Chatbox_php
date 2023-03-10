@@ -9,6 +9,8 @@ $data = mysqli_query($conn, $sql);
 if ($data) {
     if (header('location: home.php'));
     header('location: home.php');
+    exit();
 } else {
     header('location: userDetail.php ');
+    exit();
 }

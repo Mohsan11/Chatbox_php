@@ -8,7 +8,9 @@ if (isset($_POST['sub'])) {
     $data = mysqli_query($conn, $sql);
     if ($data) {
         header('location: LoginForm.php');
+        exit();
     } else {
         header('RegisterForm.php');
+        exit();
     }
 }

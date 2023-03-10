@@ -13,9 +13,11 @@ if (isset($_POST['sub'])) {
         $_SESSION['id'] = $row['User_Id'];
         $Id = $row['User_Id'];
         header('location:home.php?currentId=' . $Id);
+        exit();
     } else {
         unset($_SESSION['logedIn']);
         unset($_SESSION['id']);
         header('location: LoginForm.php');
+        exit();
     }
 }
